@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.log
+launcher.build/
+launcher.dist/
+launcher.onefile-build/
+.vscode/
