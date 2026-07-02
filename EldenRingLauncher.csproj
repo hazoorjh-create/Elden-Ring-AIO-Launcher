@@ -22,6 +22,7 @@
     <Resource Include="icon.png" />
     <Resource Include="bg.png" />
     <EmbeddedResource Include="Rites.mp3" />
+    <None Include="README.md" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
