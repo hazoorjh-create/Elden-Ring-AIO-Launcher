@@ -141,7 +141,7 @@
 
         <!-- Version Info (Bottom Left) -->
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
-            <TextBlock Text="Launcher v6.0.6" Foreground="#554d3f" FontSize="11"/>
+            <TextBlock Text="Launcher v6.0.14" Foreground="#554d3f" FontSize="11"/>
         </StackPanel>
 
         <!-- Global Mute Button (Top Left) -->
