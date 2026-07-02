@@ -21,6 +21,7 @@
     <Resource Include="icon.ico" />
     <Resource Include="icon.png" />
     <Resource Include="bg.png" />
+    <EmbeddedResource Include="Rites.mp3" />
   </ItemGroup>
 
 </Project>

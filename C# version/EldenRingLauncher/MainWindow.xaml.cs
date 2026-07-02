@@ -16,6 +16,7 @@ namespace EldenRingLauncher
         public string OfflineExe { get; set; } = "";
         public string CustomExe { get; set; } = "";
         public bool AutoClose { get; set; } = true;
+        public bool IsMuted { get; set; } = false;
     }
 
     public partial class MainWindow : Window
@@ -26,6 +27,8 @@ namespace EldenRingLauncher
         private LauncherConfig _config;
         private bool _launched = false;
         private Action _dialogYesCallback;
+        private System.Windows.Media.MediaPlayer _bgMusic = new System.Windows.Media.MediaPlayer();
+        private bool _isMuted = false;
 
         public MainWindow()
         {
@@ -46,6 +49,54 @@ namespace EldenRingLauncher
 
             _config.AutoClose = true; // Always force Auto-Close
             CheckSetup();
+            StartBackgroundMusic();
+        }
+
+        private void StartBackgroundMusic()
+        {
+            try
+            {
+                // If in setup mode, default to muted. Otherwise use saved preference.
+                _isMuted = SetupOverlay.Visibility == Visibility.Visible ? true : _config.IsMuted;
+                _bgMusic.IsMuted = _isMuted;
+                BtnMute.Content = _isMuted ? "🔇" : "🔊";
+                BtnMute.Foreground = new System.Windows.Media.SolidColorBrush(_isMuted ? System.Windows.Media.Color.FromRgb(150, 150, 150) : System.Windows.Media.Color.FromRgb(200, 162, 60));
+
+                string tempAudioPath = Path.Combine(Path.GetTempPath(), "EldenLauncher_Rites.mp3");
+                if (!File.Exists(tempAudioPath))
+                {
+                    using (Stream stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingAIOLauncher.Rites.mp3") ?? System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingLauncher.Rites.mp3"))
+                    {
+                        if (stream != null)
+                        {
+                            using (FileStream fileStream = new FileStream(tempAudioPath, FileMode.Create))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                        }
+                    }
+                }
+                
+                if (File.Exists(tempAudioPath))
+                {
+                    _bgMusic.Open(new Uri(tempAudioPath));
+                    _bgMusic.MediaEnded += (s, e) => { _bgMusic.Position = TimeSpan.Zero; _bgMusic.Play(); };
+                    _bgMusic.Volume = 0.5; // Half volume so it's not overwhelming
+                    _bgMusic.Play();
+                }
+            }
+            catch { /* Ignore audio failures silently */ }
+        }
+
+        private void BtnMute_Click(object sender, RoutedEventArgs e)
+        {
+            _isMuted = !_isMuted;
+            _bgMusic.IsMuted = _isMuted;
+            _config.IsMuted = _isMuted;
+            SaveConfig();
+
+            BtnMute.Content = _isMuted ? "🔇" : "🔊";
+            BtnMute.Foreground = new System.Windows.Media.SolidColorBrush(_isMuted ? System.Windows.Media.Color.FromRgb(150, 150, 150) : System.Windows.Media.Color.FromRgb(200, 162, 60));
         }
 
         private void Endorse_Click(object sender, MouseButtonEventArgs e)
@@ -187,8 +238,8 @@ namespace EldenRingLauncher
                                  "pause\n" +
                                  "start /b \"\" cmd /c del \"%~f0\"&exit /b\n";
                 File.WriteAllText(uninstaller, batCode);
-
-                ShowModernDialog("Setup Complete", "Please close this window and launch the game directly through Steam from now on so Steam tracks your hours.", false, () => Application.Current.Shutdown());
+                System.Media.SystemSounds.Asterisk.Play();
+                ShowModernDialog("Setup Complete", "Please close this window now and launch the game through steam.", false, () => Application.Current.Shutdown());
             }
         }
 
@@ -342,6 +393,8 @@ namespace EldenRingLauncher
                                  "start /b \"\" cmd /c del \"%~f0\"&exit /b\n";
                 File.WriteAllText(tmp, batCode);
                 Process.Start(new ProcessStartInfo { FileName = tmp, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden });
+                System.Media.SystemSounds.Asterisk.Play();
+                System.Threading.Thread.Sleep(300); // Give the system sound time to play before the process dies
                 Application.Current.Shutdown();
             });
         }
