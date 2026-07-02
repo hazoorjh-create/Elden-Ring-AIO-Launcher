@@ -265,15 +265,18 @@
                     <!-- Add Custom Mod -->
                     <Button Style="{StaticResource CardButton}" Click="BtnAddMod_Click" Margin="0,0,0,0">
                         <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Background="#2ea043" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}" Foreground="#2ea043"/>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="+ Add Custom Mod" Style="{StaticResource HoverTitleStyle}"/>
-                                    <TextBlock Text="Select a .exe or .bat file" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                                    <TextBlock x:Name="TxtCustomModTitle" Text="+ Add Custom Mod" Style="{StaticResource HoverTitleStyle}"/>
+                                    <TextBlock x:Name="TxtCustomModStatus" Text="Select a .exe, .bat, or .me3 file" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
                                 </StackPanel>
                             </StackPanel>
+                            <TextBlock x:Name="BtnDeleteCustomMod" Grid.Column="2" Visibility="Collapsed" Text="Delete" 
+                                       Foreground="#cc4444" VerticalAlignment="Center" FontSize="11" Margin="0,0,15,0" Cursor="Hand" 
+                                       PreviewMouseLeftButtonDown="BtnDeleteCustomMod_Click" TextDecorations="Underline"/>
                         </Grid>
                     </Button>
                 </StackPanel>

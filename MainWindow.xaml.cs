@@ -223,6 +223,20 @@ namespace EldenRingLauncher
                 TxtConvergenceStatus.Text = "Ready";
                 CardConvergence.Visibility = Visibility.Visible;
             }
+
+            // Custom Mod
+            if (!string.IsNullOrEmpty(_config.CustomExe) && File.Exists(_config.CustomExe))
+            {
+                TxtCustomModTitle.Text = Path.GetFileName(_config.CustomExe);
+                TxtCustomModStatus.Text = "Ready";
+                BtnDeleteCustomMod.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TxtCustomModTitle.Text = "+ Add Custom Mod";
+                TxtCustomModStatus.Text = "Select a .exe, .bat, or .me3 file";
+                BtnDeleteCustomMod.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void BtnSetupBrowse_Click(object sender, RoutedEventArgs e)
@@ -272,7 +286,7 @@ namespace EldenRingLauncher
 
         private string PromptForMod(string modName)
         {
-            OpenFileDialog dlg = new OpenFileDialog { Title = $"Select {modName} Executable", Filter = "Executables (*.exe;*.bat)|*.exe;*.bat" };
+            OpenFileDialog dlg = new OpenFileDialog { Title = $"Select {modName} Executable", Filter = "Executables (*.exe;*.bat;*.me3)|*.exe;*.bat;*.me3" };
             return dlg.ShowDialog() == true ? dlg.FileName : "";
         }
 
@@ -408,8 +422,17 @@ namespace EldenRingLauncher
             {
                 _config.CustomExe = PromptForMod("Custom Mod");
                 SaveConfig();
+                CheckModStatuses();
             }
             if (!string.IsNullOrEmpty(_config.CustomExe) && File.Exists(_config.CustomExe)) LaunchMod(_config.CustomExe);
+        }
+
+        private void BtnDeleteCustomMod_Click(object sender, MouseButtonEventArgs e)
+        {
+            _config.CustomExe = "";
+            SaveConfig();
+            CheckModStatuses();
+            e.Handled = true;
         }
 
         private void BtnUninstall_Click(object sender, RoutedEventArgs e)
