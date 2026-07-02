@@ -187,7 +187,10 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="LAUNCH" Foreground="{StaticResource GoldBrush}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="LAUNCH" Foreground="{StaticResource GoldBrush}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                        <TextBlock Text="+ Add Custom Mod" Foreground="#2ea043" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BtnAddCustomMod_Click" TextDecorations="Underline"/>
+                    </Grid>
                     <TextBlock Grid.Row="1" Text="Choose your path" Foreground="{StaticResource TextSubBrush}" FontSize="12" Margin="2,2,0,0"/>
                     <Border Grid.Row="2" Height="1" Background="{StaticResource GoldDimBrush}" Margin="0,15,0,20"/>
                 </Grid>
@@ -263,16 +266,16 @@
 
                     <Border Height="1" Background="#1E1E1E" Margin="10,10,10,10"/>
 
-                    <!-- Add Custom Mod -->
-                    <Button Style="{StaticResource CardButton}" Click="BtnAddMod_Click" Margin="0,0,0,0">
+                    <!-- Custom Mod -->
+                    <Button x:Name="CardCustomMod" Style="{StaticResource CardButton}" Click="BtnLaunchCustomMod_Click" Margin="0,0,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Background="#2ea043" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}" Foreground="#2ea043"/>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock x:Name="TxtCustomModTitle" Text="+ Add Custom Mod" Style="{StaticResource HoverTitleStyle}"/>
-                                    <TextBlock x:Name="TxtCustomModStatus" Text="Select a .exe, .bat, or .me3 file" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                                    <TextBlock x:Name="TxtCustomModTitle" Text="Custom Mod" Style="{StaticResource HoverTitleStyle}"/>
+                                    <TextBlock x:Name="TxtCustomModStatus" Text="Ready" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                             <TextBlock x:Name="BtnDeleteCustomMod" Grid.Column="2" Visibility="Collapsed" Text="Delete" 

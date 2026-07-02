@@ -230,12 +230,11 @@ namespace EldenRingLauncher
                 TxtCustomModTitle.Text = Path.GetFileName(_config.CustomExe);
                 TxtCustomModStatus.Text = "Ready";
                 BtnDeleteCustomMod.Visibility = Visibility.Visible;
+                CardCustomMod.Visibility = Visibility.Visible;
             }
             else
             {
-                TxtCustomModTitle.Text = "+ Add Custom Mod";
-                TxtCustomModStatus.Text = "Select a .exe, .bat, or .me3 file";
-                BtnDeleteCustomMod.Visibility = Visibility.Collapsed;
+                CardCustomMod.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -416,14 +415,15 @@ namespace EldenRingLauncher
             if (!string.IsNullOrEmpty(_config.ConvergenceExe) && File.Exists(_config.ConvergenceExe)) LaunchMod(_config.ConvergenceExe);
         }
 
-        private void BtnAddMod_Click(object sender, RoutedEventArgs e)
+        private void BtnAddCustomMod_Click(object sender, MouseButtonEventArgs e)
         {
-            if (string.IsNullOrEmpty(_config.CustomExe) || !File.Exists(_config.CustomExe))
-            {
-                _config.CustomExe = PromptForMod("Custom Mod");
-                SaveConfig();
-                CheckModStatuses();
-            }
+            _config.CustomExe = PromptForMod("Custom Mod");
+            SaveConfig();
+            CheckModStatuses();
+        }
+
+        private void BtnLaunchCustomMod_Click(object sender, RoutedEventArgs e)
+        {
             if (!string.IsNullOrEmpty(_config.CustomExe) && File.Exists(_config.CustomExe)) LaunchMod(_config.CustomExe);
         }
 
