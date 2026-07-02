@@ -16,9 +16,9 @@
     <Product>Elden Ring AIO Launcher</Product>
     <Description>All-in-one mod launcher for Elden Ring</Description>
     <Copyright>Copyright © 2026 Dante69K</Copyright>
-    <Version>6.0.24</Version>
-    <FileVersion>6.0.24.0</FileVersion>
-    <AssemblyVersion>6.0.24.0</AssemblyVersion>
+    <Version>6.0.25</Version>
+    <FileVersion>6.0.25.0</FileVersion>
+    <AssemblyVersion>6.0.25.0</AssemblyVersion>
     
     <!-- Single File Deployment -->
     <PublishSingleFile>true</PublishSingleFile>
@@ -32,7 +32,7 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
     <Resource Include="icon.png" />
-    <Resource Include="bg.png" />
+    <Resource Include="bg.jpg" />
     <EmbeddedResource Include="Rites.mp3" />
     <None Include="README.txt" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
