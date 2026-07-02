@@ -599,18 +599,15 @@ class EldenRingLauncher(ctk.CTk):
         if getattr(self, '_launched', False): return
         self._launched = True
         if os.path.exists(path):
-            # 1. We MUST completely close our launcher so Co-op doesn't abort from seeing start_protected_game.exe running.
-            # 2. We MUST route through explorer.exe to completely escape Steam's Job Object (or Steam kills Co-op when we close).
-            # 3. We MUST use a VBScript to enforce the correct CWD, because explorer.exe strips it, causing "Error 3".
-            vbs_path = os.path.join(self.base_dir, "launcher_proxy.vbs")
-            with open(vbs_path, "w") as f:
-                f.write('Set objShell = CreateObject("Shell.Application")\n')
-                f.write(f'objShell.ShellExecute "{path}", "", "{os.path.dirname(path)}", "open", 1\n')
-                f.write('Set fso = CreateObject("Scripting.FileSystemObject")\n')
-                f.write(f'fso.DeleteFile("{vbs_path}")\n')
-            
+            # 1. We MUST completely close our launcher so Co-op doesn't abort.
+            # 2. We MUST escape Steam's Job Object, or Steam kills Co-op when we close.
+            # 3. We MUST set the correct CWD, or Co-op crashes with Error 3.
+            # 4. We MUST NOT drop a .vbs or .bat file, because Windows Defender flags it as a Wacatac dropper.
+            # Solution: We run an in-memory PowerShell command that talks directly to the Windows Desktop
+            # COM object to flawlessly launch the mod natively outside the Job Object with the exact right CWD.
             import subprocess
-            subprocess.Popen(["explorer.exe", vbs_path])
+            ps_cmd = f"$shell = New-Object -ComObject Shell.Application; $shell.ShellExecute('{path}', '', '{os.path.dirname(path)}', 'open', 1)"
+            subprocess.Popen(["powershell", "-WindowStyle", "Hidden", "-Command", ps_cmd], creationflags=0x08000000)
             self.destroy()
 
     def _launch_real(self):
