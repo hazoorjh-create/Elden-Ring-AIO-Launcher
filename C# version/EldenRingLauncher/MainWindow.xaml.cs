@@ -182,7 +182,7 @@ namespace EldenRingLauncher
                                  "        ren \"real_start_protected_game.exe\" \"start_protected_game.exe\"\n" +
                                  "    )\n" +
                                  ")\n" +
-                                 "del /f /q \"launcher_config.json\"\n" +
+                                 "del /f /q \"launcher_config.json\" \"launcher_crash.log\" \"launcher_error.log\" \"launcher_debug.log\"\n" +
                                  "echo Launcher successfully uninstalled. Game restored to Vanilla.\n" +
                                  "pause\n" +
                                  "start /b \"\" cmd /c del \"%~f0\"&exit /b\n";
@@ -338,7 +338,7 @@ namespace EldenRingLauncher
                                  "        ren \"real_start_protected_game.exe\" \"start_protected_game.exe\"\n" +
                                  "    )\n" +
                                  ")\n" +
-                                 $"del /f /q \"{tmp}\" launcher_config.json Uninstall_Launcher.bat\n" +
+                                 $"del /f /q \"{tmp}\" \"launcher_config.json\" \"Uninstall_Launcher.bat\" \"launcher_crash.log\" \"launcher_error.log\" \"launcher_debug.log\"\n" +
                                  "start /b \"\" cmd /c del \"%~f0\"&exit /b\n";
                 File.WriteAllText(tmp, batCode);
                 Process.Start(new ProcessStartInfo { FileName = tmp, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden });
