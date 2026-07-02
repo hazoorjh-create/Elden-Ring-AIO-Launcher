@@ -179,18 +179,30 @@ namespace EldenRingLauncher
             if (string.IsNullOrEmpty(_config.OfflineExe) || !File.Exists(_config.OfflineExe))
             {
                 var files = Directory.GetFiles(_baseDir, "EldenRingOfflineLauncher-*.exe");
-                TxtOfflineStatus.Text = files.Length > 0 ? "Ready" : "Click to locate";
+                bool found = files.Length > 0;
+                TxtOfflineStatus.Text = found ? "Ready" : "Click to locate";
+                BtnDownloadOffline.Visibility = found ? Visibility.Collapsed : Visibility.Visible;
             }
-            else TxtOfflineStatus.Text = "Ready";
+            else 
+            {
+                TxtOfflineStatus.Text = "Ready";
+                BtnDownloadOffline.Visibility = Visibility.Collapsed;
+            }
 
             // Seamless
             string def1 = Path.Combine(_baseDir, "ersc_launcher.exe");
             string def2 = Path.Combine(_baseDir, "SeamlessCoop", "ersc_launcher.exe");
             if (string.IsNullOrEmpty(_config.CoopExe) || !File.Exists(_config.CoopExe))
             {
-                TxtCoopStatus.Text = (File.Exists(def1) || File.Exists(def2)) ? "Ready" : "Click to locate";
+                bool found = File.Exists(def1) || File.Exists(def2);
+                TxtCoopStatus.Text = found ? "Ready" : "Click to locate";
+                BtnDownloadCoop.Visibility = found ? Visibility.Collapsed : Visibility.Visible;
             }
-            else TxtCoopStatus.Text = "Ready";
+            else 
+            {
+                TxtCoopStatus.Text = "Ready";
+                BtnDownloadCoop.Visibility = Visibility.Collapsed;
+            }
 
             // Convergence
             string def3 = Path.Combine(_baseDir, "Start_Convergence.bat");
@@ -327,6 +339,16 @@ namespace EldenRingLauncher
                 }
             }
             if (!string.IsNullOrEmpty(_config.OfflineExe) && File.Exists(_config.OfflineExe)) LaunchMod(_config.OfflineExe);
+        }
+
+        private void BtnDownloadOffline_Click(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/98", UseShellExecute = true });
+        }
+
+        private void BtnDownloadCoop_Click(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/510", UseShellExecute = true });
         }
 
         private void BtnCoop_Click(object sender, RoutedEventArgs e)

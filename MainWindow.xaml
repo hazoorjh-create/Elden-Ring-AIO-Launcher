@@ -212,34 +212,44 @@
                     </Button>
 
                     <!-- Offline Mode -->
-                    <Button Style="{StaticResource CardButton}" Click="BtnOffline_Click">
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
-                                <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Offline Mode" Style="{StaticResource HoverTitleStyle}"/>
-                                    <TextBlock x:Name="TxtOfflineStatus" Text="Click to locate" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                    <StackPanel Margin="0,0,0,10">
+                        <Button Style="{StaticResource CardButton}" Click="BtnOffline_Click" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Offline Mode" Style="{StaticResource HoverTitleStyle}"/>
+                                        <TextBlock x:Name="TxtOfflineStatus" Text="Click to locate" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
+                            </Grid>
+                        </Button>
+                        <TextBlock x:Name="BtnDownloadOffline" Visibility="Collapsed" Text="Download / Install from NexusMods" 
+                                   Foreground="#d19336" HorizontalAlignment="Right" FontSize="11" Margin="0,4,4,0" Cursor="Hand" 
+                                   MouseLeftButtonUp="BtnDownloadOffline_Click" TextDecorations="Underline"/>
+                    </StackPanel>
 
                     <!-- Seamless Co-op -->
-                    <Button Style="{StaticResource CardButton}" Click="BtnCoop_Click">
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
-                                <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Seamless Co-op" Style="{StaticResource HoverTitleStyle}"/>
-                                    <TextBlock x:Name="TxtCoopStatus" Text="Click to locate" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                    <StackPanel Margin="0,0,0,10">
+                        <Button Style="{StaticResource CardButton}" Click="BtnCoop_Click" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Seamless Co-op" Style="{StaticResource HoverTitleStyle}"/>
+                                        <TextBlock x:Name="TxtCoopStatus" Text="Click to locate" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
+                            </Grid>
+                        </Button>
+                        <TextBlock x:Name="BtnDownloadCoop" Visibility="Collapsed" Text="Download / Install from NexusMods" 
+                                   Foreground="#d19336" HorizontalAlignment="Right" FontSize="11" Margin="0,4,4,0" Cursor="Hand" 
+                                   MouseLeftButtonUp="BtnDownloadCoop_Click" TextDecorations="Underline"/>
+                    </StackPanel>
 
                     <!-- Convergence -->
                     <Button Style="{StaticResource CardButton}" Click="BtnConvergence_Click">
