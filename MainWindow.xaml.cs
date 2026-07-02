@@ -102,6 +102,7 @@ namespace EldenRingLauncher
         private void Endorse_Click(object sender, MouseButtonEventArgs e)
         {
             Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/10293", UseShellExecute = true });
+            e.Handled = true;
         }
 
         private void ShowModernDialog(string title, string message, bool isYesNo = false, Action? onYes = null)
@@ -417,9 +418,14 @@ namespace EldenRingLauncher
 
         private void BtnAddCustomMod_Click(object sender, MouseButtonEventArgs e)
         {
-            _config.CustomExe = PromptForMod("Custom Mod");
-            SaveConfig();
-            CheckModStatuses();
+            string path = PromptForMod("Custom Mod");
+            if (!string.IsNullOrEmpty(path))
+            {
+                _config.CustomExe = path;
+                SaveConfig();
+                CheckModStatuses();
+            }
+            e.Handled = true;
         }
 
         private void BtnLaunchCustomMod_Click(object sender, RoutedEventArgs e)
