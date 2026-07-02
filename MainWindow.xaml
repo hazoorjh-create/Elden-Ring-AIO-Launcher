@@ -193,7 +193,8 @@
                 </Grid>
 
                 <!-- Buttons Stack (Scrolling reduced) -->
-                <StackPanel Grid.Row="2" Margin="14,0,14,0">
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="14,0,14,0">
+                    <StackPanel>
                     <!-- Vanilla -->
                     <Button Style="{StaticResource CardButton}" Click="BtnVanilla_Click">
                         <Grid>
@@ -279,7 +280,8 @@
                                        PreviewMouseLeftButtonDown="BtnDeleteCustomMod_Click" TextDecorations="Underline"/>
                         </Grid>
                     </Button>
-                </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
 
                 <!-- Footer -->
                 <Grid Grid.Row="3" Margin="22,0,22,20">
