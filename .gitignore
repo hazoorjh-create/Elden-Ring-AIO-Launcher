@@ -5,3 +5,11 @@ launcher.build/
 launcher.dist/
 launcher.onefile-build/
 .vscode/
+
+# Exclude 3rd party mods
+SeamlessCoop/
+ersc_launcher.exe
+Start_Convergence.bat
+
+# Exclude compiled output (Releases should be uploaded manually)
+output/
