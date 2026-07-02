@@ -11,10 +11,22 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyName>EldenRingAIOLauncher</AssemblyName>
     
+    <!-- Assembly Metadata (reduces antivirus false positives) -->
+    <Company>Dante69K</Company>
+    <Product>Elden Ring AIO Launcher</Product>
+    <Description>All-in-one mod launcher for Elden Ring</Description>
+    <Copyright>Copyright © 2026 Dante69K</Copyright>
+    <Version>6.0.24</Version>
+    <FileVersion>6.0.24.0</FileVersion>
+    <AssemblyVersion>6.0.24.0</AssemblyVersion>
+    
     <!-- Single File Deployment -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    
+    <!-- ReadyToRun: Pre-compiles IL to native code, reducing AV heuristic flags -->
+    <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <ItemGroup>

@@ -141,7 +141,7 @@
 
         <!-- Version Info (Bottom Left) -->
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
-            <TextBlock Text="Launcher v6.0.22" Foreground="#554d3f" FontSize="11"/>
+            <TextBlock Text="Launcher v6.0.24" Foreground="#554d3f" FontSize="11"/>
         </StackPanel>
 
         <!-- Global Mute Button (Top Left) -->
@@ -264,25 +264,8 @@
                         </Grid>
                     </Button>
 
-                    <Border Height="1" Background="#1E1E1E" Margin="10,10,10,10"/>
-
-                    <!-- Custom Mod -->
-                    <Button x:Name="CardCustomMod" Style="{StaticResource CardButton}" Click="BtnLaunchCustomMod_Click" Margin="0,0,0,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Background="#2ea043" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
-                                <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}" Foreground="#2ea043"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBox x:Name="TxtCustomModTitle" Text="Custom Mod" Background="Transparent" BorderThickness="0" Foreground="#E0E0E0" FontSize="14" FontWeight="SemiBold" CaretBrush="White" Cursor="IBeam" Margin="-2,0,0,0" TextChanged="TxtCustomModTitle_TextChanged" PreviewMouseLeftButtonDown="TxtCustomModTitle_PreviewMouseLeftButtonDown" ToolTip="Click to rename"/>
-                                    <TextBlock x:Name="TxtCustomModStatus" Text="Ready" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
-                                </StackPanel>
-                            </StackPanel>
-                            <TextBlock x:Name="BtnDeleteCustomMod" Grid.Column="2" Visibility="Collapsed" Text="Delete" 
-                                       Foreground="#cc4444" VerticalAlignment="Center" FontSize="11" Margin="0,0,15,0" Cursor="Hand" 
-                                       PreviewMouseLeftButtonDown="BtnDeleteCustomMod_Click" TextDecorations="Underline"/>
-                        </Grid>
-                    </Button>
+                    <!-- Custom Mods (dynamically generated) -->
+                    <StackPanel x:Name="CustomModsContainer"/>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -337,6 +320,32 @@
                             <Button.Template><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="6"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template>
                         </Button>
                         <Button x:Name="DialogBtnYes" Content="OK" Foreground="{StaticResource DarkBgBrush}" Background="{StaticResource GoldBrush}" Width="100" Height="38" FontWeight="Bold" Click="DialogBtnYes_Click">
+                            <Button.Template><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="6"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+
+        <!-- Name Custom Mod Dialog -->
+        <Border x:Name="NameModOverlay" Background="#F20A0A0A" Visibility="Collapsed">
+            <Border Background="#111111" BorderBrush="{StaticResource GoldDimBrush}" BorderThickness="1" CornerRadius="12" Width="420" MinHeight="200" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="30">
+                <Border.Effect><DropShadowEffect Color="Black" BlurRadius="30" Opacity="0.6" ShadowDepth="0"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Name Your Mod" Foreground="{StaticResource GoldBrush}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Grid.Row="1" Text="Enter a display name for your custom mod:" Foreground="{StaticResource TextSubBrush}" FontSize="13" Margin="0,0,0,12"/>
+                    <TextBox x:Name="TxtNameModInput" Grid.Row="2" Background="#1A1A1A" Foreground="#E0E0E0" BorderBrush="{StaticResource GoldDimBrush}" BorderThickness="1" FontSize="15" Height="38" Padding="8,6" CaretBrush="White" Margin="0,0,0,20"/>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Cancel" Foreground="{StaticResource TextMainBrush}" Background="#2A2A2A" Margin="0,0,10,0" Width="100" Height="38" Click="NameModCancel_Click">
+                            <Button.Template><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="6"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template>
+                        </Button>
+                        <Button Content="Add Mod" Foreground="{StaticResource DarkBgBrush}" Background="{StaticResource GoldBrush}" Width="100" Height="38" FontWeight="Bold" Click="NameModConfirm_Click">
                             <Button.Template><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="6"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template>
                         </Button>
                     </StackPanel>
