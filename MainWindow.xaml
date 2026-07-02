@@ -287,7 +287,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Uninstall" Style="{StaticResource DangerButton}" Width="100" Height="28" FontSize="11" Click="BtnUninstall_Click"/>
+                    <Button Grid.Column="0" Content="Uninstall Launcher" Style="{StaticResource DangerButton}" Width="110" Height="28" FontSize="11" Click="BtnUninstall_Click"/>
                     <TextBlock Grid.Column="1" Text="♥ Endorse this Mod" Foreground="{StaticResource GoldDimBrush}" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="Endorse_Click"/>
                 </Grid>
             </Grid>
