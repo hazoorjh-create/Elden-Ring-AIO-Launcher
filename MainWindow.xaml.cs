@@ -431,7 +431,7 @@ namespace EldenRingLauncher
 
         private void TxtCustomModTitle_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_config.CustomExe)) return;
+            if (_config == null || string.IsNullOrEmpty(_config.CustomExe)) return;
             _config.CustomName = TxtCustomModTitle.Text;
             SaveConfig();
         }
