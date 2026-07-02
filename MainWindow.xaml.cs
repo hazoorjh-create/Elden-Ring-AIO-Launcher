@@ -15,6 +15,7 @@ namespace EldenRingLauncher
         public string ConvergenceExe { get; set; } = "";
         public string OfflineExe { get; set; } = "";
         public string CustomExe { get; set; } = "";
+        public string CustomName { get; set; } = "";
         public bool AutoClose { get; set; } = true;
         public bool IsMuted { get; set; } = false;
     }
@@ -228,7 +229,7 @@ namespace EldenRingLauncher
             // Custom Mod
             if (!string.IsNullOrEmpty(_config.CustomExe) && File.Exists(_config.CustomExe))
             {
-                TxtCustomModTitle.Text = Path.GetFileName(_config.CustomExe);
+                TxtCustomModTitle.Text = string.IsNullOrEmpty(_config.CustomName) ? Path.GetFileNameWithoutExtension(_config.CustomExe) : _config.CustomName;
                 TxtCustomModStatus.Text = "Ready";
                 BtnDeleteCustomMod.Visibility = Visibility.Visible;
                 CardCustomMod.Visibility = Visibility.Visible;
@@ -428,6 +429,19 @@ namespace EldenRingLauncher
             e.Handled = true;
         }
 
+        private void TxtCustomModTitle_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_config.CustomExe)) return;
+            _config.CustomName = TxtCustomModTitle.Text;
+            SaveConfig();
+        }
+
+        private void TxtCustomModTitle_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TxtCustomModTitle.Focus();
+            e.Handled = true;
+        }
+
         private void BtnLaunchCustomMod_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(_config.CustomExe) && File.Exists(_config.CustomExe)) LaunchMod(_config.CustomExe);
@@ -436,6 +450,7 @@ namespace EldenRingLauncher
         private void BtnDeleteCustomMod_Click(object sender, MouseButtonEventArgs e)
         {
             _config.CustomExe = "";
+            _config.CustomName = "";
             SaveConfig();
             CheckModStatuses();
             e.Handled = true;

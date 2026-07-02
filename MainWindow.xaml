@@ -274,7 +274,7 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}" Foreground="#2ea043"/>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock x:Name="TxtCustomModTitle" Text="Custom Mod" Style="{StaticResource HoverTitleStyle}"/>
+                                    <TextBox x:Name="TxtCustomModTitle" Text="Custom Mod" Background="Transparent" BorderThickness="0" Foreground="#E0E0E0" FontSize="14" FontWeight="SemiBold" CaretBrush="White" Cursor="IBeam" Margin="-2,0,0,0" TextChanged="TxtCustomModTitle_TextChanged" PreviewMouseLeftButtonDown="TxtCustomModTitle_PreviewMouseLeftButtonDown" ToolTip="Click to rename"/>
                                     <TextBlock x:Name="TxtCustomModStatus" Text="Ready" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
                                 </StackPanel>
                             </StackPanel>
