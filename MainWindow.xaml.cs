@@ -344,11 +344,13 @@ namespace EldenRingLauncher
         private void BtnDownloadOffline_Click(object sender, MouseButtonEventArgs e)
         {
             Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/98", UseShellExecute = true });
+            e.Handled = true;
         }
 
         private void BtnDownloadCoop_Click(object sender, MouseButtonEventArgs e)
         {
             Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/510", UseShellExecute = true });
+            e.Handled = true;
         }
 
         private void BtnCoop_Click(object sender, RoutedEventArgs e)
