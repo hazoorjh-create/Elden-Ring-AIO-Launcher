@@ -26,7 +26,7 @@ namespace EldenRingLauncher
         private string _realVanillaPath;
         private LauncherConfig _config;
         private bool _launched = false;
-        private Action _dialogYesCallback;
+        private Action? _dialogYesCallback;
         private System.Windows.Media.MediaPlayer _bgMusic = new System.Windows.Media.MediaPlayer();
         private bool _isMuted = false;
 
@@ -65,7 +65,7 @@ namespace EldenRingLauncher
                 string tempAudioPath = Path.Combine(Path.GetTempPath(), "EldenLauncher_Rites.mp3");
                 if (!File.Exists(tempAudioPath))
                 {
-                    using (Stream stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingAIOLauncher.Rites.mp3") ?? System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingLauncher.Rites.mp3"))
+                    using (Stream? stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingAIOLauncher.Rites.mp3") ?? System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EldenRingLauncher.Rites.mp3"))
                     {
                         if (stream != null)
                         {
@@ -104,7 +104,7 @@ namespace EldenRingLauncher
             Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/10293", UseShellExecute = true });
         }
 
-        private void ShowModernDialog(string title, string message, bool isYesNo = false, Action onYes = null)
+        private void ShowModernDialog(string title, string message, bool isYesNo = false, Action? onYes = null)
         {
             MainUI.Visibility = Visibility.Collapsed;
             SetupOverlay.Visibility = Visibility.Collapsed;
