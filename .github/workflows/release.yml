@@ -39,3 +39,13 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to NexusMods
+        uses: Nexus-Mods/upload-action@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
+          file_id: ${{ secrets.NEXUSMODS_FILE_ID }}
+          filename: EldenRingAIOLauncher.zip
+          version: ${{ github.ref_name }}
+          category: main
