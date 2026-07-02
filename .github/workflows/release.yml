@@ -21,12 +21,11 @@ jobs:
 
       - name: Publish C# Project
         run: |
-          cd "C# version/EldenRingLauncher"
           dotnet publish -c Release
 
       - name: Create ZIP archive
         run: |
-          $publishPath = "C# version\EldenRingLauncher\bin\Release\net10.0-windows\win-x64\publish"
+          $publishPath = "bin\Release\net10.0-windows\win-x64\publish"
           $zipPath = "EldenRingAIOLauncher.zip"
           Compress-Archive -Path "$publishPath\EldenRingAIOLauncher.exe", "$publishPath\Readme.txt" -DestinationPath $zipPath -Force
 
