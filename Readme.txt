@@ -8,7 +8,8 @@ FEATURES
 - Seamless Co-op Support: Perfectly bypasses Steam Job Object tracking and CWD bugs in the Seamless Co-op executable to provide a flawless 1-click launch.
 - The Convergence Support: Integrates seamlessly to launch The Convergence flawlessly.
 - Offline Mode Support: Automatically detects and plays via the EldenRingOfflineLauncher.
-- Zero Virus Flags: Built natively in C# utilizing safe Windows Explorer routing to ensure antivirus software (like Windows Defender) doesn't falsely flag the executable as a Trojan (Wacatac).
+- Zero Virus Flags: Built natively in C# utilizing safe Windows Explorer routing to ensure antivirus software (like Windows Defender) doesn't falsely flag the executable as a Trojan (Wacatac). 
+  VirusTotal Scan: https://www.virustotal.com/gui/file/78b251aa482d1fb6f687f715ce9cfeeb548e5692d8fae6a01b32c8e0108e16fc?nocache=1
 - Clean Uninstaller: Includes a self-cleaning uninstaller inside the app that safely restores your original game files and leaves no trace on your system.
 
 SETUP INSTRUCTIONS
