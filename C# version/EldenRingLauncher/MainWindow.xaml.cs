@@ -31,18 +31,26 @@ namespace EldenRingLauncher
         {
             InitializeComponent();
             
-            string exePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
-            _baseDir = Path.GetDirectoryName(exePath) ?? "";
+            // FIX: In .NET Single File deployments, AppDomain.BaseDirectory points to the Temp extraction folder.
+            // Environment.ProcessPath guarantees we always get the true directory where the .exe sits.
+            _baseDir = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
             _configPath = Path.Combine(_baseDir, "launcher_config.json");
             _realVanillaPath = Path.Combine(_baseDir, "real_start_protected_game.exe");
-            
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => {
-                File.WriteAllText(Path.Combine(_baseDir, "launcher_crash.log"), e.ExceptionObject.ToString());
-            };
-            
-            LoadConfig();
-            ChkAutoClose.IsChecked = _config.AutoClose;
+
+            if (File.Exists(_configPath))
+            {
+                try { _config = JsonSerializer.Deserialize<LauncherConfig>(File.ReadAllText(_configPath)) ?? new LauncherConfig(); }
+                catch { _config = new LauncherConfig(); }
+            }
+            else { _config = new LauncherConfig(); }
+
+            _config.AutoClose = true; // Always force Auto-Close
             CheckSetup();
+        }
+
+        private void Endorse_Click(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = "https://www.nexusmods.com/eldenring/mods/10293", UseShellExecute = true });
         }
 
         private void ShowModernDialog(string title, string message, bool isYesNo = false, Action onYes = null)
@@ -106,6 +114,40 @@ namespace EldenRingLauncher
                 MainUI.Visibility = Visibility.Collapsed;
                 SetupOverlay.Visibility = Visibility.Visible;
             }
+            else
+            {
+                MainUI.Visibility = Visibility.Visible;
+                SetupOverlay.Visibility = Visibility.Collapsed;
+                CheckModStatuses();
+            }
+        }
+
+        private void CheckModStatuses()
+        {
+            // Offline
+            if (string.IsNullOrEmpty(_config.OfflineExe) || !File.Exists(_config.OfflineExe))
+            {
+                var files = Directory.GetFiles(_baseDir, "EldenRingOfflineLauncher-*.exe");
+                TxtOfflineStatus.Text = files.Length > 0 ? "Ready" : "Click to locate";
+            }
+            else TxtOfflineStatus.Text = "Ready";
+
+            // Seamless
+            string def1 = Path.Combine(_baseDir, "ersc_launcher.exe");
+            string def2 = Path.Combine(_baseDir, "SeamlessCoop", "ersc_launcher.exe");
+            if (string.IsNullOrEmpty(_config.CoopExe) || !File.Exists(_config.CoopExe))
+            {
+                TxtCoopStatus.Text = (File.Exists(def1) || File.Exists(def2)) ? "Ready" : "Click to locate";
+            }
+            else TxtCoopStatus.Text = "Ready";
+
+            // Convergence
+            string def3 = Path.Combine(_baseDir, "Start_Convergence.bat");
+            if (string.IsNullOrEmpty(_config.ConvergenceExe) || !File.Exists(_config.ConvergenceExe))
+            {
+                TxtConvergenceStatus.Text = File.Exists(def3) ? "Ready" : "Click to locate";
+            }
+            else TxtConvergenceStatus.Text = "Ready";
         }
 
         private void BtnSetupBrowse_Click(object sender, RoutedEventArgs e)
@@ -152,15 +194,6 @@ namespace EldenRingLauncher
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
-
-        private void ChkAutoClose_Changed(object sender, RoutedEventArgs e)
-        {
-            if (_config != null)
-            {
-                _config.AutoClose = ChkAutoClose.IsChecked ?? true;
-                SaveConfig();
-            }
-        }
 
         private string PromptForMod(string modName)
         {
