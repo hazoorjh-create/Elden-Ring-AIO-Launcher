@@ -246,7 +246,7 @@
                     </Button>
 
                     <!-- Convergence -->
-                    <Button Style="{StaticResource CardButton}" Click="BtnConvergence_Click">
+                    <Button x:Name="CardConvergence" Style="{StaticResource CardButton}" Click="BtnConvergence_Click">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>

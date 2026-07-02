@@ -208,9 +208,21 @@ namespace EldenRingLauncher
             string def3 = Path.Combine(_baseDir, "Start_Convergence.bat");
             if (string.IsNullOrEmpty(_config.ConvergenceExe) || !File.Exists(_config.ConvergenceExe))
             {
-                TxtConvergenceStatus.Text = File.Exists(def3) ? "Ready" : "Click to locate";
+                if (File.Exists(def3))
+                {
+                    TxtConvergenceStatus.Text = "Ready";
+                    CardConvergence.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CardConvergence.Visibility = Visibility.Collapsed;
+                }
             }
-            else TxtConvergenceStatus.Text = "Ready";
+            else 
+            {
+                TxtConvergenceStatus.Text = "Ready";
+                CardConvergence.Visibility = Visibility.Visible;
+            }
         }
 
         private void BtnSetupBrowse_Click(object sender, RoutedEventArgs e)
