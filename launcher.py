@@ -606,7 +606,7 @@ class EldenRingLauncher(ctk.CTk):
             # Solution: We run an in-memory PowerShell command that talks directly to the Windows Desktop
             # COM object to flawlessly launch the mod natively outside the Job Object with the exact right CWD.
             import subprocess
-            ps_cmd = f"$shell = New-Object -ComObject Shell.Application; $shell.ShellExecute('{path}', '', '{os.path.dirname(path)}', 'open', 1)"
+            ps_cmd = f"Start-Sleep -Seconds 3; $shell = New-Object -ComObject Shell.Application; $shell.ShellExecute('{path}', '', '{os.path.dirname(path)}', 'open', 1)"
             subprocess.Popen(["powershell", "-WindowStyle", "Hidden", "-Command", ps_cmd], creationflags=0x08000000)
             self.destroy()
 
