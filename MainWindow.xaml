@@ -102,7 +102,7 @@
     </Window.Resources>
 
     <Grid x:Name="RootGrid" Background="{StaticResource DarkBgBrush}" ClipToBounds="True">
-        <Image Source="pack://application:,,,/bg.jpg" Stretch="UniformToFill"/>
+        <Image Source="pack://application:,,,/bg3.png" Stretch="UniformToFill"/>
         
         <!-- Drifting Fog Animation Overlay -->
         <Canvas Opacity="0.10">
@@ -140,7 +140,7 @@
 
         <!-- Version Info (Bottom Left) -->
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
-            <TextBlock Text="Launcher v6.0.25" Foreground="#554d3f" FontSize="11"/>
+            <TextBlock Text="Launcher v6.0.29" Foreground="#554d3f" FontSize="11"/>
         </StackPanel>
 
         <!-- Global Mute Button (Top Left) -->

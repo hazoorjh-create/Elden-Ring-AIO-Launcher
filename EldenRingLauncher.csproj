@@ -32,7 +32,7 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
     <Resource Include="icon.png" />
-    <Resource Include="bg.jpg" />
+    <Resource Include="bg3.png" />
     <EmbeddedResource Include="Rites.mp3" />
     <None Include="README.txt" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
