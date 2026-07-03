@@ -13,6 +13,8 @@ if (-not (Test-Path $signtool)) {
 }
 
 $filesToSign = @(
+    "bin\Release\net10.0-windows\win-x64\EldenRingAIOLauncher.dll",
+    "bin\Release\net10.0-windows\win-x64\EldenRingAIOLauncher.exe",
     "bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.dll",
     "bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.exe",
     "bin\Release\net10.0-windows\win-x64\publish\EldenRingAIOLauncher.exe"

@@ -37,7 +37,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: EldenRingAIOLauncher.zip
+          files: |
+            EldenRingAIOLauncher.zip
+            bin\Release\net10.0-windows\win-x64\publish\EldenRingAIOLauncher.exe
           draft: false
           prerelease: false
           generate_release_notes: true
