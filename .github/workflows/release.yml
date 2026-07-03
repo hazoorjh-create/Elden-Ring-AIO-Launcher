@@ -23,9 +23,6 @@ jobs:
         run: |
           dotnet publish -c Release -r win-x64
 
-      - name: Sign the Build
-        run: |
-          ./Sign-Build.ps1
 
       - name: Create ZIP archive
         run: |
