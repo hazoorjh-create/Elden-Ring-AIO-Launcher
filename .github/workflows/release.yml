@@ -23,6 +23,48 @@ jobs:
         run: |
           dotnet publish -c Release -r win-x64
 
+      - name: Sign the Build
+        shell: pwsh
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+        run: |
+          if (-not $env:CERTIFICATE_BASE64 -or -not $env:CERTIFICATE_PASSWORD) {
+              Write-Host "Certificate secrets not found, skipping signing."
+              exit 0
+          }
+          
+          # Decode the certificate
+          $pfxBytes = [System.Convert]::FromBase64String($env:CERTIFICATE_BASE64)
+          $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "certificate.pfx"
+          [System.IO.File]::WriteAllBytes($pfxPath, $pfxBytes)
+          
+          # Find signtool
+          $signtool = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter "signtool.exe" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match "x64" } | Select-Object -First 1 -ExpandProperty FullName
+          
+          if (-not $signtool) {
+              Write-Host "Signtool not found. Please install Windows SDK or find signtool.exe."
+              exit 1
+          }
+          
+          $fileToSign = "bin\Release\net10.0-windows\win-x64\publish\EldenRingAIOLauncher.exe"
+          
+          if (Test-Path $fileToSign) {
+              & $signtool sign /f $pfxPath /p $env:CERTIFICATE_PASSWORD /fd SHA256 /t "http://timestamp.digicert.com" $fileToSign
+              if ($LASTEXITCODE -eq 0) {
+                  Write-Host "Successfully signed: $fileToSign"
+              } else {
+                  Write-Host "Failed to sign: $fileToSign"
+                  exit 1
+              }
+          } else {
+              Write-Host "File not found: $fileToSign"
+              exit 1
+          }
+          
+          # Clean up
+          Remove-Item -Path $pfxPath -Force
+
 
       - name: Create ZIP archive
         run: |
