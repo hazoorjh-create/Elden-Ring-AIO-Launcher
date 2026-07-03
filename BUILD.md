@@ -8,7 +8,6 @@ To compile the application, you will need the following tools installed on your 
 1. **.NET 10.0 SDK**: Required to build and publish the C# WPF application. 
    - Download from the [official Microsoft website](https://dotnet.microsoft.com/download/dotnet/10.0).
 2. **Visual Studio 2022** (optional but recommended): If you wish to open, edit, and build using an IDE, the Community version is free.
-3. **Windows SDK**: Required if you intend to sign the built executables using `signtool.exe` (this is optional if you just want to run the app).
 
 ## How to Build via Command Line (CLI)
 
@@ -36,13 +35,3 @@ To compile the application, you will need the following tools installed on your 
 4. You can use the existing publish profile or create a new Folder Profile targeting `bin\Release\net10.0-windows\win-x64\publish\`.
 5. Click **Publish**.
 
-## Optional: Signing the Executable
-
-If you have a code signing certificate, the repository contains a PowerShell script (`Sign-Build.ps1`) to automatically sign the built executables to reduce antivirus false positives.
-
-1. Ensure `Dante69K.pfx` is present in the root directory (Note: Replace this with your own certificate for your own builds, as passwords/keys are private).
-2. Open PowerShell and run:
-   ```powershell
-   .\Sign-Build.ps1
-   ```
-   *Note: Ensure `signtool.exe` from the Windows SDK is installed on your system, as the script attempts to locate it.*
