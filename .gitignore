@@ -1,22 +1,8 @@
-__pycache__/
-*.pyc
+bin/
+obj/
+*.user
+*.suo
 *.log
-launcher.build/
-launcher.dist/
-launcher.onefile-build/
-.vscode/
-
-# Exclude 3rd party mods
-SeamlessCoop/
-ersc_launcher.exe
-Start_Convergence.bat
-
-# Exclude compiled output (Releases should be uploaded manually)
-output/
-v t _ a p i _ k e y . t x t  
- v t - c h e c k . p s 1  
- v t _ r e p o r t * . j s o n  
- 
-# Exclude signing files
-Sign-Build.ps1
-*.pfx
+*.pdb
+vt_report*.json
+vt_api_key.txt

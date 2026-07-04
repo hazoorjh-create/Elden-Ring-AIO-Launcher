@@ -1,6 +1,0 @@
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.exe
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\README.txt
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.deps.json
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.runtimeconfig.json
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.pdb
-d:\PythonProjects\Elden Ring Launcher\bin\Release\net10.0-windows\win-x64\publish_unpacked\EldenRingAIOLauncher.dll
