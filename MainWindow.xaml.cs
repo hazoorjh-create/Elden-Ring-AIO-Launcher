@@ -49,6 +49,13 @@ namespace EldenRingLauncher
         {
             InitializeComponent();
             
+            var versionAttr = System.Reflection.Assembly.GetExecutingAssembly()
+                .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
+                .FirstOrDefault() as System.Reflection.AssemblyInformationalVersionAttribute;
+            string versionStr = versionAttr?.InformationalVersion ?? "v1.0.0";
+            if (!versionStr.StartsWith("v")) versionStr = "v" + versionStr;
+            TxtVersion.Text = "Launcher " + versionStr;
+
             // FIX: In .NET Single File deployments, AppDomain.BaseDirectory points to the Temp extraction folder.
             // Environment.ProcessPath guarantees we always get the true directory where the .exe sits.
             _baseDir = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
@@ -270,7 +277,10 @@ namespace EldenRingLauncher
                 var sep = new Border { Height = 1, Background = new SolidColorBrush(Color.FromRgb(0x1E, 0x1E, 0x1E)), Margin = new Thickness(10, 10, 10, 10) };
                 CustomModsContainer.Children.Add(sep);
 
-                // Card button
+                // Wrapper to hold the card and the floating delete button
+                var wrapperGrid = new Grid();
+
+                // Card button (Main Launch)
                 var btn = new Button();
                 btn.Style = (Style)FindResource("CardButton");
                 var capturedMod = mod;
@@ -279,7 +289,6 @@ namespace EldenRingLauncher
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
                 var accent = new Border { Background = new SolidColorBrush(Color.FromRgb(0x2e, 0xa0, 0x43)), Width = 3, Height = 48, CornerRadius = new CornerRadius(2), Margin = new Thickness(12, 0, 12, 0) };
                 Grid.SetColumn(accent, 0);
@@ -297,8 +306,22 @@ namespace EldenRingLauncher
                 sp.Children.Add(textStack);
                 grid.Children.Add(sp);
 
-                var deleteBtn = new TextBlock { Text = "Delete", Foreground = new SolidColorBrush(Color.FromRgb(0xcc, 0x44, 0x44)), VerticalAlignment = VerticalAlignment.Center, FontSize = 11, Margin = new Thickness(0, 0, 15, 0), Cursor = Cursors.Hand, TextDecorations = TextDecorations.Underline };
-                Grid.SetColumn(deleteBtn, 2);
+                btn.Content = grid;
+                wrapperGrid.Children.Add(btn);
+
+                // Dedicated Delete Button (Floating top right)
+                var deleteBtn = new TextBlock();
+                deleteBtn.Text = "✕";
+                deleteBtn.FontSize = 14;
+                deleteBtn.FontWeight = FontWeights.Bold;
+                deleteBtn.Foreground = new SolidColorBrush(Color.FromRgb(0x8A, 0x7F, 0x6A));
+                deleteBtn.VerticalAlignment = VerticalAlignment.Top;
+                deleteBtn.HorizontalAlignment = HorizontalAlignment.Right;
+                deleteBtn.Margin = new Thickness(0, 8, 8, 0);
+                deleteBtn.Cursor = Cursors.Hand;
+                deleteBtn.ToolTip = "Remove custom mod";
+                deleteBtn.MouseEnter += (s, e) => { deleteBtn.Foreground = new SolidColorBrush(Color.FromRgb(0xcc, 0x44, 0x44)); };
+                deleteBtn.MouseLeave += (s, e) => { deleteBtn.Foreground = new SolidColorBrush(Color.FromRgb(0x8A, 0x7F, 0x6A)); };
                 deleteBtn.PreviewMouseLeftButtonDown += (s, e) =>
                 {
                     _config.CustomMods.Remove(capturedMod);
@@ -306,10 +329,9 @@ namespace EldenRingLauncher
                     RenderCustomMods();
                     e.Handled = true;
                 };
-                grid.Children.Add(deleteBtn);
+                wrapperGrid.Children.Add(deleteBtn);
 
-                btn.Content = grid;
-                CustomModsContainer.Children.Add(btn);
+                CustomModsContainer.Children.Add(wrapperGrid);
             }
         }
 
@@ -490,7 +512,7 @@ namespace EldenRingLauncher
             if (!string.IsNullOrEmpty(_config.ConvergenceExe) && File.Exists(_config.ConvergenceExe)) LaunchMod(_config.ConvergenceExe);
         }
 
-        private void BtnAddCustomMod_Click(object sender, MouseButtonEventArgs e)
+        private void BtnAddCustomMod_Click(object sender, RoutedEventArgs e)
         {
             string path = PromptForMod("Custom Mod");
             if (!string.IsNullOrEmpty(path))

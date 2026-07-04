@@ -99,6 +99,46 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Custom Modern ScrollBar Style -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Border Background="#10C8A23C" BorderBrush="#22C8A23C" BorderThickness="1" CornerRadius="5" Margin="2,0,2,0"/>
+                            <Track x:Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border x:Name="thumbBorder" Background="{StaticResource GoldDimBrush}" CornerRadius="4" Margin="1,0,1,0"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource GoldBrush}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsDragging" Value="True">
+                                                        <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource GoldBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid x:Name="RootGrid" Background="{StaticResource DarkBgBrush}" ClipToBounds="True">
@@ -140,7 +180,7 @@
 
         <!-- Version Info (Bottom Left) -->
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
-            <TextBlock Text="Launcher v6.0.29" Foreground="#554d3f" FontSize="11"/>
+            <TextBlock x:Name="TxtVersion" Foreground="#554d3f" FontSize="11"/>
         </StackPanel>
 
         <!-- Global Mute Button (Top Left) -->
@@ -188,14 +228,26 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <TextBlock Text="LAUNCH" Foreground="{StaticResource GoldBrush}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
-                        <TextBlock Text="+ Add Custom Mod" Foreground="#2ea043" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BtnAddCustomMod_Click" TextDecorations="Underline"/>
+                        <TextBlock Text="♥ Endorse this Mod" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="Endorse_Click">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource GoldDimBrush}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource GoldBrush}"/>
+                                            <Setter Property="TextDecorations" Value="Underline"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Grid>
                     <TextBlock Grid.Row="1" Text="Choose your path" Foreground="{StaticResource TextSubBrush}" FontSize="12" Margin="2,2,0,0"/>
                     <Border Grid.Row="2" Height="1" Background="{StaticResource GoldDimBrush}" Margin="0,15,0,20"/>
                 </Grid>
 
                 <!-- Buttons Stack (Scrolling reduced) -->
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="14,0,14,0">
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="14,0,8,0" Padding="0,0,8,0">
                     <StackPanel>
                     <!-- Vanilla -->
                     <Button Style="{StaticResource CardButton}" Click="BtnVanilla_Click">
@@ -274,8 +326,33 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Uninstall Launcher" Style="{StaticResource DangerButton}" Width="110" Height="28" FontSize="11" Click="BtnUninstall_Click"/>
-                    <TextBlock Grid.Column="1" Text="♥ Endorse this Mod" Foreground="{StaticResource GoldDimBrush}" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="Endorse_Click"/>
+                    
+                    <Button Grid.Column="0" Content="+ Add Custom Mod" Width="120" Height="28" FontSize="11" Cursor="Hand" Click="BtnAddCustomMod_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#112EA043"/>
+                                <Setter Property="Foreground" Value="#2EA043"/>
+                                <Setter Property="BorderBrush" Value="#2EA043"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#332EA043"/>
+                                        <Setter Property="Foreground" Value="#46C85E"/>
+                                        <Setter Property="BorderBrush" Value="#46C85E"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Grid.Column="1" Content="Uninstall Launcher" Style="{StaticResource DangerButton}" HorizontalAlignment="Right" Width="110" Height="28" FontSize="11" Click="BtnUninstall_Click"/>
                 </Grid>
             </Grid>
         </Border>

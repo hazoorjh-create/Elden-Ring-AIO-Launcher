@@ -21,7 +21,13 @@ jobs:
 
       - name: Publish C# Project
         run: |
-          dotnet publish -c Release -r win-x64
+          $ver = "${{ github.ref_name }}"
+          if ($ver -match "^v") {
+              $verNumber = $ver.Substring(1)
+          } else {
+              $verNumber = "1.0.0"
+          }
+          dotnet publish -c Release -r win-x64 -p:Version=$verNumber -p:InformationalVersion=$ver
 
       - name: Sign the Build
         shell: pwsh
