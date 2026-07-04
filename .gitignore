@@ -1,8 +1,29 @@
+__pycache__/
+*.pyc
+*.log
+launcher.build/
+launcher.dist/
+launcher.onefile-build/
+.vscode/
+
+# Exclude 3rd party mods
+SeamlessCoop/
+ersc_launcher.exe
+Start_Convergence.bat
+
+# Exclude compiled output
+output/
+vt_api_key.txt
+vt-check.ps1
+vt_report*.json
+
+# Exclude signing files
+Sign-Build.ps1
+*.pfx
+
+# .NET core
 bin/
 obj/
 *.user
 *.suo
-*.log
 *.pdb
-vt_report*.json
-vt_api_key.txt
