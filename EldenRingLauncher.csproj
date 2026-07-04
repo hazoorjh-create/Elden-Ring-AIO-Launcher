@@ -10,7 +10,7 @@
     <DebugSymbols>false</DebugSymbols>
     
     <!-- Application settings -->
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>finalicon.ico</ApplicationIcon>
     <AssemblyName>EldenRingAIOLauncher</AssemblyName>
     
     <!-- Assembly Metadata (reduces antivirus false positives) -->
@@ -38,6 +38,13 @@
     <Resource Include="bg3.png" />
     <EmbeddedResource Include="Rites.mp3" />
     <None Include="README.txt" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="finalicon.ico" />
+    <Resource Include="bg3.png" />
+    <None Include="README.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="finalicon.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
