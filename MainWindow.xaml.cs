@@ -194,6 +194,47 @@ namespace EldenRingLauncher
             File.WriteAllText(_configPath, JsonSerializer.Serialize(_config, new JsonSerializerOptions { WriteIndented = true }));
         }
 
+        private void UpdateSeamlessPasswordUI(bool isInstalled)
+        {
+            if (!isInstalled)
+            {
+                SeamlessPasswordPanel.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            string iniPath = Path.Combine(_baseDir, "SeamlessCoop", "ersc_settings.ini");
+            if (!File.Exists(iniPath) && !string.IsNullOrEmpty(_config.CoopExe))
+            {
+                iniPath = Path.Combine(Path.GetDirectoryName(_config.CoopExe), "ersc_settings.ini");
+            }
+
+            if (File.Exists(iniPath))
+            {
+                try
+                {
+                    string[] lines = File.ReadAllLines(iniPath);
+                    foreach (string line in lines)
+                    {
+                        if (line.Trim().StartsWith("cooppassword"))
+                        {
+                            var parts = line.Split('=');
+                            if (parts.Length > 1)
+                            {
+                                TxtSeamlessPassword.Text = parts[1].Trim();
+                            }
+                            break;
+                        }
+                    }
+                    SeamlessPasswordPanel.Visibility = Visibility.Visible;
+                }
+                catch { }
+            }
+            else
+            {
+                SeamlessPasswordPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void CheckSetup()
         {
             string exeName = Path.GetFileName(Environment.ProcessPath ?? "").ToLower();
@@ -234,11 +275,13 @@ namespace EldenRingLauncher
                 bool found = File.Exists(def1) || File.Exists(def2);
                 TxtCoopStatus.Text = found ? "Ready" : "Click to locate";
                 BtnDownloadCoop.Visibility = found ? Visibility.Collapsed : Visibility.Visible;
+                UpdateSeamlessPasswordUI(found);
             }
             else 
             {
                 TxtCoopStatus.Text = "Ready";
                 BtnDownloadCoop.Visibility = Visibility.Collapsed;
+                UpdateSeamlessPasswordUI(true);
             }
 
             // Convergence
@@ -475,6 +518,12 @@ namespace EldenRingLauncher
             e.Handled = true;
         }
 
+        private void TxtSeamlessPassword_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TxtSeamlessPassword.Focus();
+            e.Handled = true;
+        }
+
         private void BtnCoop_Click(object sender, RoutedEventArgs e)
         {
             string defaultPath1 = Path.Combine(_baseDir, "ersc_launcher.exe");
@@ -493,7 +542,34 @@ namespace EldenRingLauncher
                     SaveConfig();
                 }
             }
-            if (!string.IsNullOrEmpty(_config.CoopExe) && File.Exists(_config.CoopExe)) LaunchMod(_config.CoopExe);
+            if (!string.IsNullOrEmpty(_config.CoopExe) && File.Exists(_config.CoopExe)) 
+            {
+                string iniPath = Path.Combine(Path.GetDirectoryName(_config.CoopExe), "ersc_settings.ini");
+                if (!File.Exists(iniPath))
+                    iniPath = Path.Combine(_baseDir, "SeamlessCoop", "ersc_settings.ini");
+                
+                if (File.Exists(iniPath))
+                {
+                    try
+                    {
+                        string[] lines = File.ReadAllLines(iniPath);
+                        bool replaced = false;
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (lines[i].Trim().StartsWith("cooppassword"))
+                            {
+                                lines[i] = "cooppassword = " + TxtSeamlessPassword.Text;
+                                replaced = true;
+                                break;
+                            }
+                        }
+                        if (replaced) File.WriteAllLines(iniPath, lines);
+                    }
+                    catch { }
+                }
+
+                LaunchMod(_config.CoopExe);
+            }
         }
 
         private void BtnConvergence_Click(object sender, RoutedEventArgs e)

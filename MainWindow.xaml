@@ -210,13 +210,27 @@
                 </Grid.RowDefinitions>
 
                 <Button Content="✕" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0"
-                        Background="Transparent" Foreground="{StaticResource TextSubBrush}" FontSize="16" FontWeight="Bold" BorderThickness="0"
-                        Click="CloseButton_Click" Cursor="Hand">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                        </ControlTemplate>
-                    </Button.Template>
+                        Background="Transparent" Foreground="#aa9988" FontSize="16" FontWeight="Bold" BorderThickness="0"
+                        Click="CloseButton_Click" Cursor="Hand" ToolTip="Close Launcher">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#cc2222"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
 
                 <!-- Header -->
@@ -285,7 +299,7 @@
                     <!-- Seamless Co-op -->
                     <Button Style="{StaticResource CardButton}" Click="BtnCoop_Click">
                         <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
@@ -297,6 +311,12 @@
                             <TextBlock x:Name="BtnDownloadCoop" Grid.Column="2" Visibility="Collapsed" Text="Download / Install from NexusMods" 
                                        Foreground="#d19336" VerticalAlignment="Center" FontSize="10" Margin="0,0,15,0" Cursor="Hand" 
                                        PreviewMouseLeftButtonDown="BtnDownloadCoop_Click" TextDecorations="Underline"/>
+                            <StackPanel x:Name="SeamlessPasswordPanel" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,15,0" Visibility="Collapsed">
+                                <TextBlock Text="Password:" Foreground="{StaticResource TextSubBrush}" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="11"/>
+                                <TextBox x:Name="TxtSeamlessPassword" Width="100" Height="22" Background="#111" Foreground="#DDD" BorderBrush="#333" BorderThickness="1" 
+                                         VerticalContentAlignment="Center" Padding="4,0" FontSize="11" 
+                                         PreviewMouseLeftButtonDown="TxtSeamlessPassword_PreviewMouseLeftButtonDown"/>
+                            </StackPanel>
                         </Grid>
                     </Button>
 
