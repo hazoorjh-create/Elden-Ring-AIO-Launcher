@@ -139,6 +139,60 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource TextSubBrush}"/>
+            <Setter Property="Background" Value="#1A1A1A"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GoldDimBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="checkBoxBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" Width="14" Height="14" VerticalAlignment="Center">
+                                <TextBlock x:Name="checkMark" Text="✔" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,-1,0,0"/>
+                            </Border>
+                            <ContentPresenter Margin="6,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="checkMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#1A1A1A"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GoldDimBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
+                                <Setter TargetName="border" Property="Background" Value="#222"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid x:Name="RootGrid" Background="{StaticResource DarkBgBrush}" ClipToBounds="True">
@@ -313,8 +367,7 @@
                                        PreviewMouseLeftButtonDown="BtnDownloadCoop_Click" TextDecorations="Underline"/>
                             <StackPanel x:Name="SeamlessPasswordPanel" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,15,0" Visibility="Collapsed">
                                 <TextBlock Text="Password:" Foreground="{StaticResource TextSubBrush}" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="11"/>
-                                <TextBox x:Name="TxtSeamlessPassword" Width="100" Height="22" Background="#111" Foreground="#DDD" BorderBrush="#333" BorderThickness="1" 
-                                         VerticalContentAlignment="Center" Padding="4,0" FontSize="11" 
+                                <TextBox x:Name="TxtSeamlessPassword" Width="100" Height="22" VerticalContentAlignment="Center" FontSize="11" 
                                          PreviewMouseLeftButtonDown="TxtSeamlessPassword_PreviewMouseLeftButtonDown"/>
                             </StackPanel>
                         </Grid>
@@ -323,7 +376,7 @@
                     <!-- Convergence -->
                     <Button x:Name="CardConvergence" Style="{StaticResource CardButton}" Click="BtnConvergence_Click">
                         <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Background="{StaticResource GoldDimBrush}" Width="3" Height="48" CornerRadius="2" Margin="12,0,12,0"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="▶ " Style="{StaticResource HoverIconStyle}"/>
@@ -332,6 +385,10 @@
                                     <TextBlock x:Name="TxtConvergenceStatus" Text="Click to locate" FontSize="10" Foreground="{StaticResource TextSubBrush}"/>
                                 </StackPanel>
                             </StackPanel>
+                            <CheckBox x:Name="ChkConvergenceSync" Grid.Column="2" Content="Sync Seamless Password" 
+                                      Foreground="{StaticResource TextSubBrush}" FontSize="10" VerticalAlignment="Center" Margin="0,0,15,0" 
+                                      Visibility="Collapsed" Checked="ChkConvergenceSync_CheckedChanged" Unchecked="ChkConvergenceSync_CheckedChanged"
+                                      PreviewMouseLeftButtonDown="ChkSync_PreviewMouseLeftButtonDown"/>
                         </Grid>
                     </Button>
 
@@ -462,7 +519,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Name Your Mod" Foreground="{StaticResource GoldBrush}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
                     <TextBlock Grid.Row="1" Text="Enter a display name for your custom mod:" Foreground="{StaticResource TextSubBrush}" FontSize="13" Margin="0,0,0,12"/>
-                    <TextBox x:Name="TxtNameModInput" Grid.Row="2" Background="#1A1A1A" Foreground="#E0E0E0" BorderBrush="{StaticResource GoldDimBrush}" BorderThickness="1" FontSize="15" Height="38" Padding="8,6" CaretBrush="White" Margin="0,0,0,20"/>
+                    <TextBox x:Name="TxtNameModInput" Grid.Row="2" FontSize="15" Height="38" CaretBrush="White" Margin="0,0,0,20"/>
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="Cancel" Foreground="{StaticResource TextMainBrush}" Background="#2A2A2A" Margin="0,0,10,0" Width="100" Height="38" Click="NameModCancel_Click">
                             <Button.Template><ControlTemplate TargetType="Button"><Border Background="{TemplateBinding Background}" CornerRadius="6"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></ControlTemplate></Button.Template>

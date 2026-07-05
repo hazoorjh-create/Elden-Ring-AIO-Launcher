@@ -16,6 +16,7 @@ namespace EldenRingLauncher
     {
         public string Name { get; set; } = "";
         public string Path { get; set; } = "";
+        public bool SyncPassword { get; set; } = false;
     }
 
     public class LauncherConfig
@@ -29,6 +30,7 @@ namespace EldenRingLauncher
         public string CustomName { get; set; } = "";
         // New: multiple custom mods
         public List<CustomMod> CustomMods { get; set; } = new List<CustomMod>();
+        public bool ConvergenceSyncPassword { get; set; } = false;
         public bool AutoClose { get; set; } = true;
         public bool IsMuted { get; set; } = false;
     }
@@ -40,6 +42,7 @@ namespace EldenRingLauncher
         private string _realVanillaPath;
         private LauncherConfig _config;
         private bool _launched = false;
+        private bool _isSeamlessInstalled = false;
         private Action? _dialogYesCallback;
         private System.Windows.Media.MediaPlayer _bgMusic = new System.Windows.Media.MediaPlayer();
         private bool _isMuted = false;
@@ -197,9 +200,14 @@ namespace EldenRingLauncher
 
         private void UpdateSeamlessPasswordUI(bool isInstalled)
         {
+            _isSeamlessInstalled = isInstalled;
+            ChkConvergenceSync.Visibility = isInstalled ? Visibility.Visible : Visibility.Collapsed;
+            if (_config != null) ChkConvergenceSync.IsChecked = _config.ConvergenceSyncPassword;
+
             if (!isInstalled)
             {
                 SeamlessPasswordPanel.Visibility = Visibility.Collapsed;
+                RenderCustomMods();
                 return;
             }
 
@@ -234,6 +242,32 @@ namespace EldenRingLauncher
             {
                 SeamlessPasswordPanel.Visibility = Visibility.Collapsed;
             }
+            
+            RenderCustomMods();
+        }
+
+        private void SyncPasswordToIni(string targetExePath)
+        {
+            if (string.IsNullOrEmpty(targetExePath)) return;
+            string targetIni = Path.Combine(Path.GetDirectoryName(targetExePath) ?? "", "ersc_settings.ini");
+            if (!File.Exists(targetIni)) return;
+
+            try
+            {
+                string[] lines = File.ReadAllLines(targetIni);
+                bool replaced = false;
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().StartsWith("cooppassword"))
+                    {
+                        lines[i] = "cooppassword = " + TxtSeamlessPassword.Text;
+                        replaced = true;
+                        break;
+                    }
+                }
+                if (replaced) File.WriteAllLines(targetIni, lines);
+            }
+            catch { }
         }
 
         private void CheckSetup()
@@ -328,7 +362,14 @@ namespace EldenRingLauncher
                 var btn = new Button();
                 btn.Style = (Style)FindResource("CardButton");
                 var capturedMod = mod;
-                btn.Click += (s, e) => { if (File.Exists(capturedMod.Path)) LaunchMod(capturedMod.Path); };
+                btn.Click += (s, e) => 
+                { 
+                    if (File.Exists(capturedMod.Path)) 
+                    {
+                        if (capturedMod.SyncPassword) SyncPasswordToIni(capturedMod.Path);
+                        LaunchMod(capturedMod.Path); 
+                    }
+                };
 
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -349,6 +390,28 @@ namespace EldenRingLauncher
                 textStack.Children.Add(status);
                 sp.Children.Add(textStack);
                 grid.Children.Add(sp);
+
+                if (_isSeamlessInstalled)
+                {
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                    var chk = new CheckBox();
+                    chk.Content = "Sync Seamless Password";
+                    chk.Foreground = (Brush)FindResource("TextSubBrush");
+                    chk.FontSize = 10;
+                    chk.VerticalAlignment = VerticalAlignment.Center;
+                    chk.Margin = new Thickness(0, 0, 15, 0);
+                    chk.IsChecked = capturedMod.SyncPassword;
+                    Grid.SetColumn(chk, 2);
+                    grid.Children.Add(chk);
+
+                    chk.PreviewMouseLeftButtonDown += (s, e) =>
+                    {
+                        chk.IsChecked = !chk.IsChecked;
+                        capturedMod.SyncPassword = chk.IsChecked ?? false;
+                        SaveConfig();
+                        e.Handled = true;
+                    };
+                }
 
                 btn.Content = grid;
                 wrapperGrid.Children.Add(btn);
@@ -525,6 +588,24 @@ namespace EldenRingLauncher
             e.Handled = true;
         }
 
+        private void ChkConvergenceSync_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (_config != null && sender is CheckBox chk)
+            {
+                _config.ConvergenceSyncPassword = chk.IsChecked ?? false;
+                SaveConfig();
+            }
+        }
+
+        private void ChkSync_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is CheckBox chk)
+            {
+                chk.IsChecked = !chk.IsChecked;
+                e.Handled = true;
+            }
+        }
+
         private void BtnCoop_Click(object sender, RoutedEventArgs e)
         {
             string defaultPath1 = Path.Combine(_baseDir, "ersc_launcher.exe");
@@ -586,7 +667,11 @@ namespace EldenRingLauncher
                     SaveConfig();
                 }
             }
-            if (!string.IsNullOrEmpty(_config.ConvergenceExe) && File.Exists(_config.ConvergenceExe)) LaunchMod(_config.ConvergenceExe);
+            if (!string.IsNullOrEmpty(_config.ConvergenceExe) && File.Exists(_config.ConvergenceExe)) 
+            {
+                if (_config.ConvergenceSyncPassword) SyncPasswordToIni(_config.ConvergenceExe);
+                LaunchMod(_config.ConvergenceExe);
+            }
         }
 
         private void BtnAddCustomMod_Click(object sender, RoutedEventArgs e)
