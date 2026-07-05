@@ -53,6 +53,7 @@ namespace EldenRingLauncher
                 .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
                 .FirstOrDefault() as System.Reflection.AssemblyInformationalVersionAttribute;
             string versionStr = versionAttr?.InformationalVersion ?? "v1.0.0";
+            if (versionStr.Contains("+")) versionStr = versionStr.Substring(0, versionStr.IndexOf("+"));
             if (!versionStr.StartsWith("v")) versionStr = "v" + versionStr;
             TxtVersion.Text = "Launcher " + versionStr;
 
