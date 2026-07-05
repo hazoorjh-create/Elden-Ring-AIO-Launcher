@@ -381,21 +381,47 @@
         <Border x:Name="SetupOverlay" Background="#F20A0A0A" Visibility="Collapsed">
             <Border Background="#111111" BorderBrush="{StaticResource GoldDimBrush}" BorderThickness="1" CornerRadius="14" Width="440" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Border.Effect><DropShadowEffect Color="Black" BlurRadius="30" Opacity="0.6" ShadowDepth="0"/></Border.Effect>
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
-                    <TextBlock Text="Welcome, Tarnished" Foreground="{StaticResource GoldBrush}" FontSize="24" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,4"/>
-                    <TextBlock Text="FIRST TIME SETUP" Foreground="{StaticResource GoldDimBrush}" FontSize="11" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10"/>
-                    <Border Height="1" Background="#332A15" Margin="40,0,40,20"/>
-                    <TextBlock Text="Click below to locate your game's" Foreground="{StaticResource TextSubBrush}" FontSize="12" TextAlignment="Center" Margin="0,0,0,2"/>
-                    <TextBlock Text="start_protected_game.exe" Foreground="{StaticResource GoldDimBrush}" FontSize="13" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,2"/>
-                    <TextBlock Text="The original will be safely renamed." Foreground="{StaticResource TextSubBrush}" FontSize="12" TextAlignment="Center" Margin="0,0,0,24"/>
-                    <Button Content="Browse &amp; Install" Background="{StaticResource GoldBrush}" Foreground="{StaticResource DarkBgBrush}" FontSize="15" FontWeight="Bold" Height="48" Width="300" BorderThickness="0" Cursor="Hand" Click="BtnSetupBrowse_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="8"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            </ControlTemplate>
-                        </Button.Template>
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
+                        <TextBlock Text="Welcome, Tarnished" Foreground="{StaticResource GoldBrush}" FontSize="24" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,4"/>
+                        <TextBlock Text="FIRST TIME SETUP" Foreground="{StaticResource GoldDimBrush}" FontSize="11" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10"/>
+                        <Border Height="1" Background="#332A15" Margin="40,0,40,20"/>
+                        <TextBlock Text="Click below to locate your game's" Foreground="{StaticResource TextSubBrush}" FontSize="12" TextAlignment="Center" Margin="0,0,0,2"/>
+                        <TextBlock Text="start_protected_game.exe" Foreground="{StaticResource GoldDimBrush}" FontSize="13" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,2"/>
+                        <TextBlock Text="The original will be safely renamed." Foreground="{StaticResource TextSubBrush}" FontSize="12" TextAlignment="Center" Margin="0,0,0,24"/>
+                        <Button Content="Browse &amp; Install" Background="{StaticResource GoldBrush}" Foreground="{StaticResource DarkBgBrush}" FontSize="15" FontWeight="Bold" Height="48" Width="300" BorderThickness="0" Cursor="Hand" Click="BtnSetupBrowse_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="8"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                    
+                    <Button Content="✕" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,8,0"
+                            Background="Transparent" Foreground="#aa9988" FontSize="16" FontWeight="Bold" BorderThickness="0"
+                            Click="CloseButton_Click" Cursor="Hand" ToolTip="Close Launcher">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#cc2222"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                     </Button>
-                </StackPanel>
+                </Grid>
             </Border>
         </Border>
 
