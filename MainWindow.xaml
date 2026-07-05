@@ -4,7 +4,6 @@
         Title="Elden Ring Launcher" Height="520" Width="940"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Icon="finalicon.ico"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
     <Window.Resources>
