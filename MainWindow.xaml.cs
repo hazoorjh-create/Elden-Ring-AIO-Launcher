@@ -47,6 +47,7 @@ namespace EldenRingLauncher
         private System.Windows.Media.MediaPlayer _bgMusic = new System.Windows.Media.MediaPlayer();
         private bool _isMuted = false;
         private string _pendingModPath = "";
+        private string _pendingSetupDir = "";
 
         public MainWindow()
         {
@@ -459,7 +460,9 @@ namespace EldenRingLauncher
 
                 if (File.Exists(backup) || File.Exists(uninstaller))
                 {
-                    ShowModernDialog("Already Installed", "The Elden Ring AIO Launcher is already installed in this directory!\n\nPlease launch the game directly through Steam to use the launcher.\n\nInstallation aborted to prevent overwriting your original game files.", false, () => Application.Current.Shutdown());
+                    _pendingSetupDir = targetDir;
+                    SetupOverlay.Visibility = Visibility.Collapsed;
+                    AlreadyInstalledOverlay.Visibility = Visibility.Visible;
                     return;
                 }
 
@@ -729,6 +732,73 @@ namespace EldenRingLauncher
                 System.Threading.Thread.Sleep(300); // Give the system sound time to play before the process dies
                 Application.Current.Shutdown();
             });
+        }
+
+        private void BtnReinstall_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_pendingSetupDir)) return;
+
+            string targetExe = Path.Combine(_pendingSetupDir, "start_protected_game.exe");
+            string backup = Path.Combine(_pendingSetupDir, "real_start_protected_game.exe");
+            string uninstaller = Path.Combine(_pendingSetupDir, "Uninstall_Launcher.bat");
+
+            // Step 1: Uninstall — same logic as Uninstall_Launcher.bat
+            if (File.Exists(targetExe)) File.Delete(targetExe);
+            if (File.Exists(backup)) File.Move(backup, targetExe);
+            foreach (string f in new[] {
+                Path.Combine(_pendingSetupDir, "launcher_config.json"),
+                Path.Combine(_pendingSetupDir, "launcher_crash.log"),
+                Path.Combine(_pendingSetupDir, "launcher_error.log"),
+                Path.Combine(_pendingSetupDir, "launcher_debug.log") })
+            {
+                if (File.Exists(f)) File.Delete(f);
+            }
+            if (File.Exists(uninstaller)) File.Delete(uninstaller);
+
+            // Step 2: Clean install — same logic as BtnSetupBrowse_Click
+            backup = Path.Combine(_pendingSetupDir, "real_start_protected_game.exe");
+            File.Move(targetExe, backup);
+            File.Copy(Environment.ProcessPath ?? "", targetExe, true);
+
+            string batCode = "@echo off\n" +
+                             "echo Uninstalling Elden Ring AIO Launcher...\n" +
+                             "if exist \"start_protected_game.exe\" (\n" +
+                             "    del /f /q \"start_protected_game.exe\"\n" +
+                             "    if exist \"real_start_protected_game.exe\" (\n" +
+                             "        ren \"real_start_protected_game.exe\" \"start_protected_game.exe\"\n" +
+                             "    )\n" +
+                             ")\n" +
+                             "del /f /q \"launcher_config.json\" \"launcher_crash.log\" \"launcher_error.log\" \"launcher_debug.log\"\n" +
+                             "echo Launcher successfully uninstalled. Game restored to Vanilla.\n" +
+                             "pause\n" +
+                             "start /b \"\" cmd /c del \"%~f0\"&exit /b\n";
+            File.WriteAllText(uninstaller, batCode);
+
+            AlreadyInstalledOverlay.Visibility = Visibility.Collapsed;
+            System.Media.SystemSounds.Asterisk.Play();
+            ShowModernDialog("Reinstall Complete", "The launcher has been reinstalled successfully.\n\nPlease close this window and launch the game through Steam.", false, () => Application.Current.Shutdown());
+        }
+
+        private void BtnUninstallFromSetup_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_pendingSetupDir)) return;
+
+            string uninstaller = Path.Combine(_pendingSetupDir, "Uninstall_Launcher.bat");
+            if (File.Exists(uninstaller))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = uninstaller,
+                    WorkingDirectory = _pendingSetupDir,
+                    UseShellExecute = true
+                });
+            }
+            Application.Current.Shutdown();
+        }
+
+        private void BtnAlreadyInstalledClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
