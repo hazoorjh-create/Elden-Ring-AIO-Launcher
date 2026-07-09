@@ -39,7 +39,7 @@
     <Resource Include="bg3.png" />
     <EmbeddedResource Include="Rites.mp3" />
     <None Include="finalicon.png" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="README.txt" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="README.md" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
