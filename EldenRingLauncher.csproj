@@ -18,9 +18,9 @@
     <Product>Elden Ring AIO Launcher</Product>
     <Description>All-in-one mod launcher for Elden Ring</Description>
     <Copyright>Copyright © 2026 Dante69K</Copyright>
-    <Version>6.0.36</Version>
-    <FileVersion>6.0.36.0</FileVersion>
-    <AssemblyVersion>6.0.36.0</AssemblyVersion>
+    <Version>6.0.37</Version>
+    <FileVersion>6.0.37.0</FileVersion>
+    <AssemblyVersion>6.0.37.0</AssemblyVersion>
     
     <!-- Single File Deployment -->
     <PublishSingleFile>true</PublishSingleFile>
